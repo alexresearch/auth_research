@@ -88,29 +88,45 @@ $(document).ready(function() {
 		var n_password = $("#n_password").val();
 		var r_password = $('#r_password').val();
 		var upload_file = $('#upload');
-        var domain = 'http://' + window.location.hostname + '/auth_research/controller/register.php';
              
 		$.ajax({
             type: "POST",
-            url: domain,
+            url: 'http://' + window.location.hostname + '/auth_research/controller/register.php',
             dataType: 'JSON',
             data: {
                 login:login, 
                 n_password:n_password,
                 r_password:r_password,
                 photo:upload_file
-                
             },
             success: function(response) {
-                        if(response == '0')
-                                $("#status").html("Incorrect login or password");	
-			else if(response == '1')	
-				document.location='http://localhost';
-                            //    document.location='http://' + window.location.hostname;
-
-                    }
+            			switch(response) {
+            				case 0: 
+            					$("#status").html("This login already exists");
+            					break;
+            				case 1: 
+            					$("#status").html("Login: only english characters and numbers");
+            					break;
+            				case 2: 
+            					$("#status").html("Password: only english characters and numbers");
+            					break;
+            				case 3: 
+            					$("#status").html("Login: range only 4 to 16 characters");
+            					break;
+            				case 4: 
+            					$("#status").html("Password: range only 4 to 16 characters");
+            					break;
+            				default:
+            					document.location='http://' + window.location.hostname + '/auth_research/public/user.php';
+            			}
+                    },
+                error: function() {
+                		alert("Internal error");
+            			document.location='http://' + window.location.hostname + '/auth_research/public/index.php';
+                	}
                 });
-		
+                
 	return false;
+	
 	});
 });

@@ -1,7 +1,13 @@
 <?php
+function echo_json($error)
+{
+	header('Content-type: application/json');
+	echo json_encode($error);
+	exit();
+}
 
-if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
-		strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+//if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
+//		strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
  
 		$host = 'localhost';
 		$user = 'user';
@@ -18,16 +24,14 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
 		
 		$error = array();
 		
-		if(!preg_match_all($reg_exp, $login) || !preg_match_all($reg_exp, $password))
-			$error[] = 'Acceptable: English characters and numbers';
-		
-		if((strlen($login) || strlen($password) < 4) or (strlen($login) || strlen($login) > 16))
-			$error[] = 'The permissible range: 4 to 16 characters';
+		if(!preg_match_all($reg_exp, $login)) echo_json(1); 
+		if(!preg_match_all($reg_exp, $password)) echo_json(2);
+		if(strlen($login) < 4 or strlen($login) > 16) echo_json(3);
+	    if(strlen($password) < 4 or strlen($password) > 16) echo_json(4);
 		
 		$query = mysql_query('SELECT COUNT(id) FROM users WHERE login=' . mysql_real_escape_string($login));
 		
-		if(mysql_result($query, 0) > 0)
-			$error[] = 'This login already exists';
+		if(mysql_result($query, 0) > 0) echo_json(0);
 	
 		if(count($err) == 0)
 		{
@@ -35,13 +39,8 @@ if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
 			
 			mysql_query("INSERT INTO users (login, password) VALUES ($login, $password)");
 			
-			header('Content-type: application/json');
-			echo json_encode(1);
+			echo_json('success');
 		}
-}
-else {
-	header('Content-type: application/json');
-    echo json_encode(0);        
-}
+//}
 
 ?>
