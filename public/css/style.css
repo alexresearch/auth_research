@@ -31,7 +31,7 @@ body {
 #register_form {
     display: none;
     width: 240px; 
-    height: 280px; 
+    height: 200px; 
     float: left; 
     background-color: #aaa; 
     position:relative; 
