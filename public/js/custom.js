@@ -1,132 +1,105 @@
-function show(login, enter) {
-     sleep(200);
-     var srcElement = document.getElementById(login);
-     var hideElement = document.getElementById(enter);
-     if(srcElement != null) {
-	if(srcElement.style.display == "block") {
-            srcElement.style.display= 'none';
-   	}
-        else {
-            srcElement.style.display='block';
-            hideElement.style.display='none';
-        }
-     }  
-     return false;
-  }
-  
-function register(register, login) {
-     var srcElement = document.getElementById(register);
-     var hideElement = document.getElementById(login);
-     if(srcElement != null) {
-	if(srcElement.style.display == "block") {
-            srcElement.style.display= 'none';
-   	}
-        else {
-            srcElement.style.display='block';
-            hideElement.style.display='none';
-        }
-     }  
-     return false;
-  }
-  
-function close(login, enter) {
-    document.getElementById(login).style.display == "none";
-    document.getElementById(enter).style.display == "block";
+function check(value, field, rep) {
+	xmlhttp=new XMLHttpRequest();
+	
+	switch(field)
+	{
+		case 'login_f':
+			xmlhttp.onreadystatechange=function() {
+  				if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+  					switch(xmlhttp.responseText)
+  					{
+  						case '0':
+    						document.getElementById("login_f").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='This login already exists';
+    						break;
+  						case '1':
+  							document.getElementById("login_f").style.border="2px solid #40FF00";
+    						document.getElementById("status").innerHTML='Correct input';
+    						break; 					
+    					case '2':
+    						document.getElementById("login_f").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='Acceptable English characters and numbers';
+    						break;
+    					case '3':
+    						document.getElementById("login_f").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='The permissible range: 4 to 16 characters';
+    						break;
+    				}
+    			}
+  			}
+			xmlhttp.open("GET","http://" + window.location.hostname + "/auth_research/action/check.php?value="+value+"&field="+field,true);
+			xmlhttp.send();
+			break;
+		case 'password_f_n':
+			xmlhttp.onreadystatechange=function() {
+  				if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+  					switch(xmlhttp.responseText)
+  					{
+  						case '1':
+  							document.getElementById("password_f_n").style.border="2px solid #40FF00";
+    						document.getElementById("status").innerHTML='Correct input';
+    						break; 					
+    					case '2':
+    						document.getElementById("password_f_n").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='Acceptable English characters and numbers';
+    						break;
+    					case '3':
+    						document.getElementById("password_f_n").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='The permissible range: 4 to 16 characters';
+    						break;
+    				}
+    			}
+  			}
+			xmlhttp.open("GET","http://" + window.location.hostname + "/auth_research/action/check.php?value="+value+"&field="+field,true);
+			xmlhttp.send();
+			break;
+		case 'password_f_r':
+			xmlhttp.onreadystatechange=function() {
+  				if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+  					switch(xmlhttp.responseText)
+  					{
+  						case '1':
+  							document.getElementById("password_f_r").style.border="2px solid #40FF00";
+    						document.getElementById("status").innerHTML='Correct input';
+    						break; 					
+    					case '2':
+    						document.getElementById("password_f_r").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='Acceptable English characters and numbers';
+    						break;
+    					case '3':
+    						document.getElementById("password_f_r").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='The permissible range: 4 to 16 characters';
+    						break;
+    					case '4':
+    						document.getElementById("password_f_r").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='Passwords do not match';
+    						break;
+    				}
+    			}
+  			}
+			xmlhttp.open("GET","http://" + window.location.hostname + "/auth_research/action/check.php?value="+value+"&field="+field+"&rep="+rep,true);
+			xmlhttp.send();
+			break;
+	}
+}
+
+function show(open, hide) {
+    var srcElement = document.getElementById(open);
+    var hideElement = document.getElementById(hide);
+    if(srcElement != null) {
+		if(srcElement.style.display == "block") {
+    		srcElement.style.display= 'none';
+   		}
+    	else {
+    		srcElement.style.display='block';
+        	hideElement.style.display='none';
+    	}
+    }  
     return false;
-  }
+ }
   
-function sleep(ms) {
-    ms += new Date().getTime();
-    while (new Date() < ms){}
+function close(open, hide) {
+    document.getElementById(open).style.display == "none";
+    document.getElementById(hide).style.display == "block";
+    return false;
 } 
-
-$(document).ready(function() {
-	
-    $("#login_form").submit(function() {
-	
-        $("#status").text('Checking....').fadeIn(1000);
-        
-        var login = $("#login").val();
-	var password = $("#password").val();
-        
-        //var domain = 'http://' + window.location.hostname + '/auth/controller/login.php';
-        var domain = 'http://git/auth_research/controller/login.php';
-        
-        
-	$.ajax({
-            type: "POST",
-            url: domain,
-            dataType: 'JSON',
-            data: {
-                login: login, 
-                password: password
-            },
-            success: function(response) {
-                        if(response == '0')
-                                $("#status").html("Incorrect login or password");	
-			else if(response == '1')	
-				document.location='http://localhost';
-                            //    document.location='http://' + window.location.hostname;
-                            
-                        else if(response == '2')
-                                document.location='http://' + window.location.hostname + '/admin';
-                    }
-                });
-		
-	return false;
-	});
-});
-
-
-$(document).ready(function() {
-	
-	$("#register_form").submit(function() {
-		
-		$("#status").text('Checking...').fadeIn(1000);
-        
-        var login = $("#username").val();
-		var n_password = $("#n_password").val();
-		var r_password = $('#r_password').val();
-		var upload_file = $('#upload');
-             
-		$.ajax({
-            type: "POST",
-            url: 'http://' + window.location.hostname + '/auth_research/controller/register.php',
-            dataType: 'JSON',
-            data: {
-                login:login, 
-                n_password:n_password,
-                r_password:r_password,
-                photo:upload_file
-            },
-            success: function(response) {
-            			switch(response) {
-            				case 0: 
-            					$("#status").html("This login already exists");
-            					break;
-            				case 1: 
-            					$("#status").html("Login: only english characters and numbers");
-            					break;
-            				case 2: 
-            					$("#status").html("Password: only english characters and numbers");
-            					break;
-            				case 3: 
-            					$("#status").html("Login: range only 4 to 16 characters");
-            					break;
-            				case 4: 
-            					$("#status").html("Password: range only 4 to 16 characters");
-            					break;
-            				default:
-            					document.location='http://' + window.location.hostname + '/auth_research/public/user.php';
-            			}
-                    },
-                error: function() {
-                		alert("Internal error");
-            			document.location='http://' + window.location.hostname + '/auth_research/public/index.php';
-                	}
-                });
-                
-	return false;
-	
-	});
-});
