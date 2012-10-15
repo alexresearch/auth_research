@@ -8,16 +8,18 @@
 <script type="text/javascript" src="js/custom.js"></script>
 </head>
 <body>
-    <div id="register">
-        <form action="../action/register.php" enctype="multipart/formdata" id="register_form">
-        	<input type="text" placeholder="Login..." size=16 onkeyup="check(this.value, this.id)" id="login_f" /><br/>
-        	<input type="password" placeholder="Password..." size=16 onkeyup="check(this.value, this.id)" id="password_f_n"/><br/>
-            <input type="password" placeholder="Repeat password..." size=16 onkeyup="check(this.value, this.id, password_f_n.value)" id="password_f_r" /><br/><br/>
-            <input type="file" id="upload"></input><br/><br/>
-            <input type="submit" value="Create an accaunt" class="css3button"/>
-         </form>
-         <br/>
-        <div id="status"></div>
-    </div>
+	<div id="register">
+    	<form action="../action/register.php" id="register_form" method="post" enctype="multipart/form-data">
+			<input type="text" placeholder="Login..." size=16 onkeyup="check(this.value, this.id)" name="login_f" id="login_f" /><br/>
+        	<input type="password" placeholder="Password..." size=16 onkeyup="check(this.value, this.id)" name="password_f_n" id="password_f_n"/><br/>
+            <input type="password" placeholder="Repeat password..." size=16 onkeyup="check(this.value, this.id, password_f_n.value)" name="password_f_r" id="password_f_r" /><br/><br/>
+			<label for="file">Filename:</label>
+			<input type="file" name="file" id="file" /> 
+			<br />
+			<input type="submit" name="submit" value="Create an accaunt" class="css3button" />
+		</form>
+		<br/>
+		<div id="status"></div>
+	</div>
 </body>
 </html>

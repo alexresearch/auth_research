@@ -80,6 +80,52 @@ function check(value, field, rep) {
 			xmlhttp.open("GET","http://" + window.location.hostname + "/auth_research/action/check.php?value="+value+"&field="+field+"&rep="+rep,true);
 			xmlhttp.send();
 			break;
+		case 'login':
+			xmlhttp.onreadystatechange=function() {
+  				if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+  					switch(xmlhttp.responseText)
+  					{
+  						case '1':
+  							document.getElementById("login").style.border="2px solid #40FF00";
+    						document.getElementById("status").innerHTML='Correct input';
+    						break; 					
+    					case '2':
+    						document.getElementById("login").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='Acceptable English characters and numbers';
+    						break;
+    					case '3':
+    						document.getElementById("login").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='The permissible range: 4 to 16 characters';
+    						break;
+    				}
+    			}
+  			}
+			xmlhttp.open("GET","http://" + window.location.hostname + "/auth_research/action/check.php?value="+value+"&field="+field,true);
+			xmlhttp.send();
+			break;
+		case 'password':
+			xmlhttp.onreadystatechange=function() {
+  				if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+  					switch(xmlhttp.responseText)
+  					{
+  						case '1':
+  							document.getElementById("password_f_n").style.border="2px solid #40FF00";
+    						document.getElementById("status").innerHTML='Correct input';
+    						break; 					
+    					case '2':
+    						document.getElementById("password_f_n").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='Acceptable English characters and numbers';
+    						break;
+    					case '3':
+    						document.getElementById("password_f_n").style.border="2px solid #FF0000";
+    						document.getElementById("status").innerHTML='The permissible range: 4 to 16 characters';
+    						break;
+    				}
+    			}
+  			}
+			xmlhttp.open("GET","http://" + window.location.hostname + "/auth_research/action/check.php?value="+value+"&field="+field,true);
+			xmlhttp.send();
+			break;
 	}
 }
 
@@ -97,6 +143,10 @@ function show(open, hide) {
     }  
     return false;
  }
+ 
+function bind() {
+	alert('Bind your IP');
+}
   
 function close(open, hide) {
     document.getElementById(open).style.display == "none";

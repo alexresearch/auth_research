@@ -11,9 +11,9 @@ body {
     margin-top: 21%;
 }
 
-#status {
-	margin-left:10%;
-	font-size: 12pt;
+#signin #status {
+	margin-left:5%;
+	font-size: 8pt;
 	color: #666666;
 }
 
@@ -24,7 +24,7 @@ body {
 
 #login_form {
 	margin-left: 18%;
-	margin-top: 12%;
+	margin-top: 8%;
 }
 
 #register_form {
@@ -32,7 +32,7 @@ body {
 	margin-top: 10%;
 }
 
-#login {
+#signin {
     display: none;
     width: 250px; 
     height: 150px; 
@@ -48,7 +48,7 @@ body {
     -webkit-box-shadow: 0 0 10px #aaa;
 }
 
-#login input {
+#signin input {
 	height: 20px;
 	width: 160px;
 	border-radius:5px;
@@ -58,7 +58,7 @@ body {
     font-size:12pt;
 }
 
-#login .css3button {
+#signin .css3button {
 	font-style:normal;
 	height: 30px;
 	width: 80px;

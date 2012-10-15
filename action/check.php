@@ -1,17 +1,10 @@
 <?php
+include_once '../config/config.php';
 
 $field=$_GET["field"];
 $value=$_GET["value"];
 
-if(isset($field) && isset($value))
-{
-	$host = 'localhost';
-	$user = 'root';
-	$pass = 'mysql';
-	$db = 'auth';
-	
-	$reg_exp = "/^[a-zA-Z0-9]+$/";
-	
+if(isset($field) && isset($value)) {
 	mysql_connect($host, $user, $pass);
 	mysql_select_db($db);
 	
@@ -34,6 +27,16 @@ if(isset($field) && isset($value))
 			if(strlen($rep) < 4 or strlen($rep) > 16) echo 3;
 			else if(!preg_match($reg_exp, $rep)) echo 2;
 			else if($value != $rep) echo 4;
+			else echo 1;
+			break;
+		case 'login':
+			if(strlen($value) < 4 or strlen($value) > 16) echo 3;
+			else if(!preg_match($reg_exp, $value)) echo 2;
+			else echo 1;
+			break;
+		case 'password':
+			if(strlen($value) < 4 or strlen($value) > 16) echo 3;
+			else if(!preg_match($reg_exp, $value)) echo 2;
 			else echo 1;
 			break;
 	}

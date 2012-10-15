@@ -9,21 +9,21 @@
 </head>
 <body>
 	<div id="enter">
-		<img src="css/img/enter.png" onclick="show('login', 'enter')" />
+		<img src="css/img/enter.png" onclick="show('signin','enter')" />
 	</div>
-    <div id="login">
-    	<a href="" title="Close window" style="float: right;" onclick="close('login', 'enter')">
+	<div id="signin">
+		<a href="" title="Close window" style="float: right;" onclick="close('login', 'enter')">
         	<img src="css/img/close.png" height="25px" width="25px"/>
         </a>
-        <div id="status"></div>
-        <form id="login_form">
-        	<input type="text" placeholder="Login..." size="16" id="login_f"/>
-            <input type="password" placeholder="Password..." size="16" id="password_f"/>
-            <br/><br/>
-            <input type="submit" class="css3button" value="Sign In">
-            <a href="register.php">or register now</a>
-        </form>
-        
-    </div>
+    	<form id="login_form" action="../action/login.php" method="post">
+			<input type="text" placeholder="Login..." size=16 onkeyup="check(this.value, this.id)" name="login" id="login" /><br/>
+			<input type="password" placeholder="Password..." size="16" onkeyup="check(this.value, this.id)" name="password" id="password"/>
+			<input type="checkbox" id="check_ip" name="check_ip" onchange="bind()" />
+			<br/>
+			<input type="submit" name="submit" value="Sign In" class="css3button"/>
+			<a href="register.php">or register now</a>
+		</form>
+		<div id="status"></div>
+	</div>
 </body>
 </html>

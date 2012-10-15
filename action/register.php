@@ -1,48 +1,43 @@
 <?php
-function echo_json($error)
-{
-	header('Content-type: application/json');
-	echo json_encode($error);
-	exit();
-}
+include_once '../config/config.php';
 
-echo 'hello';
+if(isset($_POST['submit'])) {
 
-if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && 
-		strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-	
-		$host = 'localhost';
-		$user = 'user';
-		$pass = 'mysql';
-		$db = 'auth';
-		
-		$login = $_POST['login'];
-		$password = $_POST['password'];
-
-		$reg_exp = "/^[a-zA-Z0-9]+$/";
-	
 		mysql_connect($host, $user, $pass);
 		mysql_select_db($db);
 		
-		$error = array();
+		$login = $_POST['login_f'];
+		$password = $_POST['password_f_n'];
+		$repeat = $_POST['password_f_r'];
+		$file = null;
 		
-		if(!preg_match_all($reg_exp, $login)) echo_json(1); 
-		if(!preg_match_all($reg_exp, $password)) echo_json(2);
-		if(strlen($login) < 4 or strlen($login) > 16) echo_json(3);
-	    if(strlen($password) < 4 or strlen($password) > 16) echo_json(4);
+		$exts = array("jpg", "jpeg", "gif", "png");
+		$tmp = explode(".", $_FILES["file"]["name"]);
+		$extension = end($tmp);
 		
 		$query = mysql_query('SELECT COUNT(id) FROM users WHERE login=' . mysql_real_escape_string($login));
 		
-		if(mysql_result($query, 0) > 0) echo_json(0);
-	
-		if(count($err) == 0)
-		{
+		if(preg_match($reg_exp, $login) &&
+	       preg_match($reg_exp, $password) &&
+		   preg_match($reg_exp, $repeat) &&
+		   strlen($login) > 3 && strlen($login) < 17 &&
+		   strlen($password) > 3 && strlen($password) < 17 &&
+		   strlen($repeat) > 3 && strlen($repeat) < 17 &&
+		   $password == $repeat &&
+		   (mysql_result($query, 0) == 0)) {
+				if($_FILES["file"]["error"] == 0 && !(file_exists("../upload/" . $_FILES["file"]["name"]) && in_array($extension, $exts) 
+					&&
+				       ($_FILES["file"]["type"] == "image/jpg" 
+					 || $_FILES["file"]["type"] == "image/jpeg"
+					 || $_FILES["file"]["type"] == "image/png"
+					 || $_FILES["file"]["type"] == "image/gif"))
+						) 
+				{
+							move_uploaded_file($_FILES["file"]["tmp_name"], "../upload/" . $_FILES["file"]["name"]);
+							$file = $_FILES["file"]["name"]; }
 			$password = md5(md5(trim($password)));
-			
-			mysql_query("INSERT INTO users (login, password) VALUES ($login, $password)");
-			
-			echo_json('success');
+			mysql_query("INSERT INTO users (login, password, photo) VALUES ('$login', '$password', '$file')");
+			header("Location: ../public/index.php");
 		}
-}
-
+	}
 ?>
